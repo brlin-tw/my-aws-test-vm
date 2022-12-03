@@ -1,0 +1,37 @@
+# Copyright 2022 林博仁(Buo-ren, Lin) <Buo.Ren.Lin@gmail.com>
+# SPDX-License-Identifier: CC-BY-SA-4.0
+- name: Deploy my AWS test VM
+  hosts: all
+  tasks:
+    - name: Stop and disable unused systemd services to reduce instance RAM consumption
+      become: true
+      loop:
+        # Unnecessary for Ephermeral instances
+        - chrony.service
+        - unattended-upgrades.service
+
+        # Modem management
+        - ModemManager.service
+
+        # Disk mapper convenience link creation service
+        - multipathd.service
+      loop_control:
+        loop_var: systemd_service
+      ansible.builtin.service:
+        name: '{{ systemd_service }}'
+        state: stopped
+        enabled: false
+
+    - name: Check for Amazon SSM Agent status
+      register: amazon_ssm_agent_status_raw
+      changed_when: False
+      ansible.builtin.command: snap services amazon-ssm-agent
+
+    - name: Stop and disable unused Amazon SSM Agent service to reduce instance RAM consumption
+      # NOTE: The blank before "active" is required to distinguish from
+      # "inactive"
+      when: '" active" in amazon_ssm_agent_status_raw.stdout'
+      become: true
+      changed_when: true
+      ansible.builtin.command:
+        cmd: snap stop --disable amazon-ssm-agent
