@@ -52,3 +52,10 @@ repos:
     rev: v1.26.1
     hooks:
       - id: yamllint
+
+  # Check EditorConfig compliance
+  # https://github.com/editorconfig-checker
+  - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
+    rev: 2.6.2
+    hooks:
+      - id: editorconfig-checker
