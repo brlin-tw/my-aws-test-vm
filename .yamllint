@@ -134,4 +134,11 @@ rules:
   # https://yamllint.readthedocs.io/en/stable/rules.html#module-yamllint.rules.truthy
   truthy:
     level: warning
+    allowed-values:
+      - 'true'
+      - 'false'
+      - 'True'
+      - 'False'
+      - 'yes'
+      - 'no'
 ...

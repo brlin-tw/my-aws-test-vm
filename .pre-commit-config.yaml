@@ -59,3 +59,11 @@ repos:
     rev: 2.6.2
     hooks:
       - id: editorconfig-checker
+
+  # Check Ansible playbooks
+  # https://github.com/ansible/ansible-lint
+  - repo: https://github.com/ansible/ansible-lint.git
+    rev: v6.9.0
+    hooks:
+      - id: ansible-lint
+        files: \.(yaml|yml)$
