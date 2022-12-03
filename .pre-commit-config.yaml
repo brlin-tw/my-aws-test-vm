@@ -59,6 +59,7 @@ repos:
     rev: 2.6.2
     hooks:
       - id: editorconfig-checker
+        exclude: '^LICENSES/.*$'
 
   # Check Ansible playbooks
   # https://github.com/ansible/ansible-lint
